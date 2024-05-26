@@ -2,7 +2,6 @@ package ATM;
 import java.util.HashMap;
 import java.io.File;
 public interface Bank {
-
     public void deposit(double num);
     public void withdraw(double num);
     public double query();

@@ -1,5 +1,6 @@
 package ATM;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class BankImpl implements Bank{
@@ -24,6 +25,12 @@ public class BankImpl implements Bank{
         if(currentUser.isEmpty()) throw new RuntimeException("不可能，用户未登录");
         return currentAccountInfo.balance;
     }
+
+    @Override
+    public boolean userExist(String username) {
+        return false;
+    }
+
     @Override
     public void registerAccount(String username,String passport,String name,double balance)
     {
@@ -33,9 +40,26 @@ public class BankImpl implements Bank{
     public boolean login(String username, String passport) {
         if(users.containsKey(username))
         {
-            if(users)
+            //if(users)
         }
+        return false;
     }
+
+    @Override
+    public boolean logout() {
+        return false;
+    }
+
+    @Override
+    public void initUsersFromFile(File file) {
+
+    }
+
+    @Override
+    public void saveUsersToFile(File file) {
+
+    }
+
     public BankImpl() {
     }
 }
