@@ -46,8 +46,14 @@ public class BankImpl implements Bank{
     }
 
     @Override
-    public boolean logout() {
-        return false;
+    public void logout() {
+
+    }
+
+    @Override
+    public String getName() {
+        if(currentUser.isEmpty()) throw new RuntimeException("不可能，用户未登录");
+        return currentAccountInfo.name;
     }
 
     @Override
