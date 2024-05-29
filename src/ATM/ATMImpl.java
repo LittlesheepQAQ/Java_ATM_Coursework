@@ -1,12 +1,10 @@
 package ATM;
 import java.io.Console;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ATMImpl implements ATM{
     public Scanner sc = new Scanner(System.in);
-    Console console = System.console();
     File file;
     public ATMImpl(File file) throws Exception {
         this.file = file;

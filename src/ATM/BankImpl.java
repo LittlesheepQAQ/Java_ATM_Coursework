@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 
 public class BankImpl implements Bank{
-    final private HashMap<String, AccountInfo> users = new HashMap<String,AccountInfo>();
+    final private HashMap<String, AccountInfo> users = new HashMap<>();
     private String currentUser;
     private AccountInfo currentAccountInfo;
     @Override
@@ -40,7 +40,12 @@ public class BankImpl implements Bank{
     public boolean login(String username, String passport) {
         if(users.containsKey(username))
         {
-            //if(users)
+            AccountInfo temp = users.get(username);
+            if(temp.passport.equals(passport)){
+                currentAccountInfo = temp;
+                currentUser = username;
+                return true;
+            }
         }
         return false;
     }
