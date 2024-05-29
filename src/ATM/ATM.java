@@ -1,5 +1,7 @@
 package ATM;
 
+import java.io.File;
+
 /**
  * @author yyx
  * @version 0.1
@@ -51,5 +53,4 @@ public interface ATM {
      * 用户退出
      */
     public void user_exit();
-    public Bank bank = new BankImpl();
 }

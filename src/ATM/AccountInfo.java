@@ -1,6 +1,8 @@
 package ATM;
 
-public class AccountInfo {
+import java.io.Serializable;
+
+public class AccountInfo implements Serializable {
     String name;
     String passport;
     double balance;

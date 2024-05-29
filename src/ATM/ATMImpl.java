@@ -1,19 +1,18 @@
 package ATM;
 import java.io.Console;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ATMImpl implements ATM{
+    Bank bank;
     public Scanner sc = new Scanner(System.in);
-    Console console = System.console();
     File file;
     public ATMImpl(File file) throws Exception {
         this.file = file;
         if(!file.exists()){
             throw new Exception("文件不存在");
         }
-        bank.initUsersFromFile(file);
+        bank = new BankImpl(file);
     }
 
     @Override
@@ -59,6 +58,7 @@ public class ATMImpl implements ATM{
     @Override
     public void system_exit(){
         bank.saveUsersToFile(file);
+        bank.exitSystem();
     }
 
     @Override
@@ -84,38 +84,40 @@ public class ATMImpl implements ATM{
         String name = sc.nextLine();
         System.out.println("请输入初始余额：");
         double balance = sc.nextDouble();
-        bank.registerAccount(id,name,password,balance);
+        bank.registerAccount(id,password,name,balance);
         System.out.println("账户注册成功");
 
     }
 
     @Override
     public void inter_Usermenu(){
-        System.out.println("请选择操作：");
-        System.out.println("1.更改密码");
-        System.out.println("2.查询余额");
-        System.out.println("3.存款");
-        System.out.println("4.取款");
-        System.out.println("5.退出账户");
-        int choice;
-        choice = sc.nextInt();
-        sc.nextLine();
-        switch(choice){
-            case 1:
-                changePassport();
-                break;
-            case 2:
-                user_query();
-                break;
-            case 3:
-                user_deposit();
-                break;
-            case 4:
-                user_withdraw();
-                break;
-            case 5:
-                user_exit();
-                break;
+        while(true){
+            System.out.println("请选择操作：");
+            System.out.println("1.更改密码");
+            System.out.println("2.查询余额");
+            System.out.println("3.存款");
+            System.out.println("4.取款");
+            System.out.println("5.退出账户");
+            int choice;
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch(choice){
+                case 1:
+                    changePassport();
+                    break;
+                case 2:
+                    user_query();
+                    break;
+                case 3:
+                    user_deposit();
+                    break;
+                case 4:
+                    user_withdraw();
+                    break;
+                case 5:
+                    user_exit();
+                    return;
+            }
         }
     }
 
@@ -178,6 +180,5 @@ public class ATMImpl implements ATM{
         {
             e.printStackTrace();
         }
-
     }
 }
