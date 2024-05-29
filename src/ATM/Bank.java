@@ -9,6 +9,7 @@ public interface Bank {
     public boolean login(String username, String passport);
     public void logout();
     public String getName();
+    public void changePassport(String newPassport);
     public void initUsersFromFile(File file);
     public void saveUsersToFile(File file);
     public void registerAccount(String username,String passport,String name,double balance);

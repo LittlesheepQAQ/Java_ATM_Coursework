@@ -1,10 +1,21 @@
 package ATM;
 import java.io.Console;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ATMImpl implements ATM{
     public Scanner sc = new Scanner(System.in);
     Console console = System.console();
+    File file;
+    public ATMImpl(File file) throws Exception {
+        this.file = file;
+        if(!file.exists()){
+            throw new Exception("文件不存在");
+        }
+        bank.initUsersFromFile(file);
+    }
+
     @Override
     public void inter_Startmenu(){
         while(true){
@@ -19,10 +30,10 @@ public class ATMImpl implements ATM{
                     login();
                     break;
                 case 2:
-                    //registerNewAccount();
+                    registerNewAccount();
                     break;
                 case 3:
-                    //system_exit();
+                    system_exit();
                     return;
             }
         }
@@ -47,57 +58,126 @@ public class ATMImpl implements ATM{
 
     @Override
     public void system_exit(){
-
+        bank.saveUsersToFile(file);
     }
 
     @Override
     public void registerNewAccount(){
+        System.out.println("请输入用户名（ID）：");
+        String id = sc.nextLine();
+        while(bank.userExist(id)){
+            System.out.println("当前用户名已存在 1.重新输入 2.退出注册");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch(choice){
+                case 1:
+                    System.out.println("请输入用户名（ID）：");
+                    id = sc.nextLine();
+                    break;
+                case 2:
+                    return;
+            }
+        }
+        System.out.println("请输入密码：");
+        String password = sc.nextLine();
+        System.out.println("请输入姓名：");
+        String name = sc.nextLine();
+        System.out.println("请输入初始余额：");
+        double balance = sc.nextDouble();
+        bank.registerAccount(id,name,password,balance);
+        System.out.println("账户注册成功");
 
     }
 
     @Override
     public void inter_Usermenu(){
         System.out.println("请选择操作：");
-        System.out.println("1.查询余额");
-        System.out.println("2.取款");
+        System.out.println("1.更改密码");
+        System.out.println("2.查询余额");
         System.out.println("3.存款");
-        System.out.println("4.退出用户");
+        System.out.println("4.取款");
+        System.out.println("5.退出账户");
         int choice;
         choice = sc.nextInt();
         sc.nextLine();
         switch(choice){
             case 1:
-                System.out.println("用户余额为：" + bank.query());
+                changePassport();
                 break;
             case 2:
-                System.out.println("请输入取款额（¥）：");
+                user_query();
+                break;
+            case 3:
+                user_deposit();
+                break;
+            case 4:
+                user_withdraw();
+                break;
+            case 5:
+                user_exit();
+                break;
         }
+    }
+
+    public void changePassport(){
+        System.out.println("请输入新的密码：");
+        String newPassport = sc.nextLine();
+        bank.changePassport(newPassport);
+        System.out.println("密码修改成功");
     }
 
     @Override
     public void user_deposit(){
-
+        System.out.println("请输入存款金额：");
+        double depositAmount = sc.nextDouble();
+        sc.nextLine();
+        bank.deposit(depositAmount);
+        System.out.println("存款成功，当前余额为：" + bank.query());
     }
 
     @Override
     public void user_withdraw() {
-
+        System.out.println("请输入取款金额：");
+        double withdrawAmount = sc.nextDouble();
+        sc.nextLine();
+        if(bank.query() < withdrawAmount){
+            System.out.println("余额不足，无法取款。");
+        }
+        else{
+            bank.withdraw(withdrawAmount);
+            System.out.println("取款成功，当前余额为："+ bank.query());
+        }
     }
 
     @Override
     public void user_query() {
-
+        System.out.println("当前账户余额为（￥）：" + bank.query());
     }
 
     @Override
     public void user_exit() {
-
+        bank.logout();
     }
 
 
     public static void main(String[] argu)
     {
-        ATM atm = new ATMImpl();
-        atm.inter_Startmenu();
+        File file = new File("UserInfo.dat");
+        if(!file.exists()){
+            try{
+                file.createNewFile();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        try{
+            ATM atm = new ATMImpl(file);
+            atm.inter_Startmenu();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }

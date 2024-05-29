@@ -57,6 +57,12 @@ public class BankImpl implements Bank{
     }
 
     @Override
+    public void changePassport(String newPassport) {
+        if(currentUser.isEmpty()) throw new RuntimeException("不可能，用户未登录");
+        currentAccountInfo.passport = newPassport;
+    }
+
+    @Override
     public void initUsersFromFile(File file) {
 
     }
